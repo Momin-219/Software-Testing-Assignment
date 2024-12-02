@@ -1,4 +1,4 @@
-name: CI/CD Pipeline
+name: Java CI/CD Pipeline
 
 on:
   push:
@@ -11,23 +11,34 @@ on:
       - master
 
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
 
     steps:
+      # Step 1: Check out the code from the repository
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Setup Python
-        uses: actions/setup-python@v4
+      # Step 2: Set up Java environment
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
         with:
-          python-version: '3.8'
+          java-version: '17' # Update this to match your project's Java version
+          distribution: 'temurin'
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
+      # Step 3: Cache Maven dependencies to speed up builds
+      - name: Cache Maven dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
 
-      - name: Run tests
-        run: |
-          pytest
+      # Step 4: Install dependencies and build the project
+      - name: Build with Maven
+        run: mvn clean install
+
+      # Step 5: Run unit tests
+      - name: Run Tests
+        run: mvn test
