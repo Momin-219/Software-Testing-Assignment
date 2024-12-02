@@ -28,7 +28,7 @@ jobs:
 
       # Step 3: Navigate to the correct directory
       - name: Change directory to Java project
-        working-directory: ./Assignment\ 2  # Path to Assignment 2 folder (fix path)
+        working-directory: "./Assignment\ 2"  # Path to Assignment 2 folder (fix path)
         run: pwd
 
       # Step 4: Cache Maven dependencies
@@ -42,10 +42,10 @@ jobs:
 
       # Step 5: Install dependencies and build the project
       - name: Build with Maven
-        working-directory: ./Assignment\ 2  # Path to Assignment 2 folder (fix path)
+        working-directory: "./Assignment\ 2"  # Path to Assignment 2 folder (fix path)
         run: mvn clean install
 
       # Step 6: Run unit tests
       - name: Run Tests
-        working-directory: ./Assignment\ 2  # Path to Assignment 2 folder (fix path)
+        working-directory: "./Assignment\ 2"  # Path to Assignment 2 folder (fix path)
         run: mvn test
