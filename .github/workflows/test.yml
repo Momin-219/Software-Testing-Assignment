@@ -9,7 +9,7 @@ on:
       - main
 
 jobs:
-  test:
+  testing:
     runs-on: ubuntu-latest
 
     services:
@@ -18,8 +18,8 @@ jobs:
         ports:
           - 3306:3306
         env:
-          MYSQL_ROOT_PASSWORD: "`12abc=-0"
-          MYSQL_DATABASE: testing
+          MYSQL_ROOT_PASSWORD: "123456789"
+          MYSQL_DATABASE: momin
         options: >-
           --health-cmd="mysqladmin ping -h localhost --silent"
           --health-interval=10s
@@ -30,13 +30,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up JDK 11
+      - name: Set up JDK
         uses: actions/setup-java@v3
         with:
           java-version: '11'
           distribution: 'temurin'
           
-      - name: Wait for MySQL to be ready
+      - name: MySQL getting ready
         run: |
           for i in {1..10}; do
             if mysqladmin ping -h 127.0.0.1 -P 3306 --silent; then
@@ -47,10 +47,10 @@ jobs:
             sleep 5
           done
           
-      - name: Install MySQL client
+      - name: Install MySQL
         run: sudo apt-get install -y mysql-client
         
-      - name: Cache Maven dependencies
+      - name: Cache dependencies
         uses: actions/cache@v3
         with:
           path: ~/.m2/repository
@@ -58,21 +58,21 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
-      - name: Populate Database
+      - name: Fill Database
         run: |
-          mysql -h 127.0.0.1 -P 3306 -u root -p'`12abc=-0' testing < src/A2.sql
+          mysql -h 127.0.0.1 -P 3306 -u root -p'123456789' momin < A2.sql
          
-      - name: Install dependencies and run
+      - name: run
         run: |
           mvn clean install
            
-      - name: Run tests
+      - name: Runing tests
         run: |
           mvn test -Djava.awt.headless=true
 
-      - name: Upload test results
+      - name: Display test results
         if: failure()
         uses: actions/upload-artifact@v3
         with:
-          name: test-results
+          name: final-results
           path: target/surefire-reports
