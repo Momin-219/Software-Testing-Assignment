@@ -22,7 +22,7 @@ jobs:
           - 3306:3306
         env:
           MYSQL_ROOT_PASSWORD: 123456789 # Set root password
-          MYSQL_DATABASE: test_db # Optional: Initialize a database
+          MYSQL_DATABASE: momin # Optional: Initialize a database
         options: --health-cmd="mysqladmin ping --silent" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
