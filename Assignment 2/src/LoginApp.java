@@ -20,6 +20,10 @@ public class LoginApp extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
+        System.out.println("Testing pipeline with a deliberate error.");
+
+
+
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(3, 2, 10, 10));
 
